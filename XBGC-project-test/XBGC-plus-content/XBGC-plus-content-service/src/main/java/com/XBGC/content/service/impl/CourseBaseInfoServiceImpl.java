@@ -3,16 +3,12 @@ package com.XBGC.content.service.impl;
 import com.XBGC.base.exception.XBGCPlusException;
 import com.XBGC.base.model.PageParams;
 import com.XBGC.base.model.PageResult;
-import com.XBGC.content.mapper.CourseBaseMapper;
-import com.XBGC.content.mapper.CourseCategoryMapper;
-import com.XBGC.content.mapper.CourseMarketMapper;
+import com.XBGC.content.mapper.*;
 import com.XBGC.content.model.dto.AddCourseDto;
 import com.XBGC.content.model.dto.CourseBaseInfoDto;
 import com.XBGC.content.model.dto.EditCourseDto;
 import com.XBGC.content.model.dto.QueryCourseParamsDto;
-import com.XBGC.content.model.po.CourseBase;
-import com.XBGC.content.model.po.CourseCategory;
-import com.XBGC.content.model.po.CourseMarket;
+import com.XBGC.content.model.po.*;
 import com.XBGC.content.service.CourseBaseInfoService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -40,16 +36,23 @@ public class CourseBaseInfoServiceImpl  implements CourseBaseInfoService {
 
 
     @Autowired
-    CourseBaseMapper courseBaseMapper;
+    private CourseBaseMapper courseBaseMapper;
+
 
     @Autowired
-    CourseMarketMapper courseMarketMapper;
+    private CourseTeacherMapper courseTeacherMapper;
 
     @Autowired
-    CourseCategoryMapper courseCategoryMapper;
+    private TeachplanMapper teachplanMapper;
+
+    @Autowired
+    private CourseMarketMapper courseMarketMapper;
+
+    @Autowired
+    private CourseCategoryMapper courseCategoryMapper;
 
     @Override
-    public PageResult<CourseBase> queryCourseBaseList(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto) {
+    public PageResult<CourseBase> queryCourseBaseList(Long companyId,PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto) {
 
 
         //构建查询条件对象
@@ -60,6 +63,14 @@ public class CourseBaseInfoServiceImpl  implements CourseBaseInfoService {
         queryWrapper.eq(StringUtils.isNotEmpty(queryCourseParamsDto.getAuditStatus()),CourseBase::getAuditStatus,queryCourseParamsDto.getAuditStatus());
 //构建查询条件，根据课程发布状态查询
 //todo:根据课程发布状态查询
+
+        // 构建查询条件，根据课程审核状态查询
+        queryWrapper.eq(StringUtils.isNotEmpty(queryCourseParamsDto.getAuditStatus()),CourseBase::getAuditStatus,queryCourseParamsDto.getAuditStatus());
+
+// 构建查询条件，根据课程发布状态查询
+        queryWrapper.eq(StringUtils.isNotEmpty(queryCourseParamsDto.getPublishStatus()), CourseBase::getStatus, queryCourseParamsDto.getPublishStatus());
+
+
 
         //分页对象
         Page<CourseBase> page = new Page<>(pageParams.getPageNo(), pageParams.getPageSize());
@@ -80,7 +91,7 @@ public class CourseBaseInfoServiceImpl  implements CourseBaseInfoService {
     @Transactional
     @Override  //增删改 都要实现
     public CourseBaseInfoDto createCourseBase(Long companyId, AddCourseDto dto) {
-        //参数合法性校验    在controller配置自动校验后 可保留可去掉
+    /*    //参数合法性校验    在controller配置自动校验后 可保留可去掉
         if (StringUtils.isBlank(dto.getName())) {
             throw new RuntimeException("课程名称为空");
         }
@@ -107,36 +118,42 @@ public class CourseBaseInfoServiceImpl  implements CourseBaseInfoService {
 
         if (StringUtils.isBlank(dto.getCharge())) {
             throw new RuntimeException("收费规则为空");
-        }
+        }*/
         //、、、、、、、、、向课程基本信息表course_base写入数据、、、、、、、、、、
-        //新增对象
+        //向课程基本信息表course_base写入数据
         CourseBase courseBaseNew = new CourseBase();
-        //将填写的课程信息赋值给新增对象
-        BeanUtils.copyProperties(dto, courseBaseNew);
+        //将传入的页面的参数放到courseBaseNew对象
+//        courseBaseNew.setName(dto.getName());
+//        courseBaseNew.setDescription(dto.getDescription());
+        //上边的从原始对象中get拿数据向新对象set，比较复杂  //将填写的课程信息赋值给新增对象
+        BeanUtils.copyProperties(dto,courseBaseNew);//只要属性名称一致就可以拷贝
         //设置审核状态
         courseBaseNew.setAuditStatus("202002");
         //设置发布状态
         courseBaseNew.setStatus("203001");
-        //机构id
+        /*//机构id
         courseBaseNew.setCompanyId(companyId);
         //添加时间
-        courseBaseNew.setCreateDate(LocalDateTime.now());
+        courseBaseNew.setCreateDate(LocalDateTime.now());*/
         //插入课程基本信息表
         int insert = courseBaseMapper.insert(courseBaseNew);
         if (insert <= 0) {
             throw new RuntimeException("新增课程基本信息失败");
         }
         //向课程营销表保存课程营销信息 //todo:向课程营销表保存课程营销信息
-        //课程营销信息
+        //向课程营销系courese_market写入数据
         CourseMarket courseMarketNew = new CourseMarket();
+        //将页面输入的数据拷贝到courseMarketNew
+        BeanUtils.copyProperties(dto,courseMarketNew);
+        //课程的id
         Long courseId = courseBaseNew.getId();
-        BeanUtils.copyProperties(dto, courseMarketNew);
         courseMarketNew.setId(courseId);
-        int i = saveCourseMarket(courseMarketNew);
-        if (i <= 0) {
-            throw new RuntimeException("保存课程营销信息失败");
-        }
-        return getCourseBaseInfo(courseId);
+        //保存营销信息
+        saveCourseMarket(courseMarketNew);
+        //从数据库查询课程的详细信息，包括两部分
+        CourseBaseInfoDto courseBaseInfo = getCourseBaseInfo(courseId);
+
+        return courseBaseInfo;
     }
 
 
@@ -223,7 +240,6 @@ public class CourseBaseInfoServiceImpl  implements CourseBaseInfoService {
     }
 
 
-
     //单独创建一个方法保存营销信息，逻辑是，存在则更新，不存在则添加
     private int saveCourseMarket(CourseMarket courseMarketNew) {
         //参数合法性校验
@@ -250,9 +266,36 @@ public class CourseBaseInfoServiceImpl  implements CourseBaseInfoService {
             //更新
             return  courseMarketMapper.updateById(courseMarket);
         }
-
     }
 
+
+    //刪除课程接口
+    @Override
+    public void delectCourse(Long companyId, Long courseId) {
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        if (courseBase == null) {
+            XBGCPlusException.cast("课程不存在");
+        }
+        if (!companyId.equals(courseBase.getCompanyId())) {
+            XBGCPlusException.cast("只允许删除本机构的课程");
+        }
+        // 检查课程审核状态是否为未提交
+        if (!"未提交".equals(courseBase.getAuditStatus())) {
+            XBGCPlusException.cast("只有审核状态为未提交的课程才能删除");
+        }
+        // 删除课程教师信息
+        LambdaQueryWrapper<CourseTeacher> teacherLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        teacherLambdaQueryWrapper.eq(CourseTeacher::getCourseId, courseId);
+        courseTeacherMapper.delete(teacherLambdaQueryWrapper);
+        // 删除课程计划
+        LambdaQueryWrapper<Teachplan> teachplanLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        teachplanLambdaQueryWrapper.eq(Teachplan::getCourseId, courseId);
+        teachplanMapper.delete(teachplanLambdaQueryWrapper);
+        // 删除营销信息
+        courseMarketMapper.deleteById(courseId);
+        // 删除课程基本信息
+        courseBaseMapper.deleteById(courseId);
+    }
 }
 
 

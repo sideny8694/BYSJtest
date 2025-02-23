@@ -20,6 +20,11 @@
         <result column="is_preview" property="isPreview" />
         <result column="create_date" property="createDate" />
         <result column="change_date" property="changeDate" />
+
+        <result column="pname" property="pname" />
+        <result column="parentid" property="parentid" />
+        <result column="grade" property="grade" />
+        <result column="media_type" property="mediaType" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -90,12 +95,28 @@
             m1.id             teachplanMeidaId,
             m1.media_id       mediaId
         from teachplan one
-                 inner join teachplan two on two.parentid = one.id
+                 left join teachplan two on two.parentid = one.id
                  left join teachplan_media m1 on two.id = m1.teachplan_id
         where one.parentid = 0
           and one.course_id = #{id}
         order by one.orderby,two.orderby
 
+    </select>
+
+
+    <!-- 更新课程计划的排序 -->
+    <update id="updateSort">
+        UPDATE teachplan
+        SET orderby = #{orderby}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 查询指定课程下指定父节点的所有子课程计划 -->
+    <select id="selectSiblings" resultMap="BaseResultMap">
+        SELECT *
+        FROM teachplan
+        WHERE course_id = #{courseId} AND parentid = #{parentId}
+        ORDER BY orderby
     </select>
 
 </mapper>

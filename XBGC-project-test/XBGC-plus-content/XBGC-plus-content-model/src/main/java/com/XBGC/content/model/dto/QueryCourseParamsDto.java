@@ -5,7 +5,9 @@ import lombok.ToString;
 
 /**
  * @author Mr.w
- *  * @description 课程查询条件模型类
+ * @version 1.0
+ * @description 课程查询条件模型类
+ * @date 2025/2/1/11 15:37
  */
 @Data
 @ToString

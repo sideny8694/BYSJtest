@@ -1,6 +1,6 @@
 package com.XBGC.content.service;
 
-import com.XBGC.content.model.dto.TeachplanDto;
+
 import com.XBGC.content.model.po.Teachplan;
 import com.baomidou.mybatisplus.extension.service.IService;
 

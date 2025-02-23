@@ -3,6 +3,7 @@ package com.XBGC;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 
 /**
@@ -12,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version 1.0
  */
 
-
+@EnableFeignClients(basePackages={"com.XBGC.content.feignclient"})
 @SpringBootApplication //启动类 要在com.XBGC修 因为我们的根目录就是这个结构 然后在进行扫包
 public class ContentApplication {
     public static void main(String[] args) {

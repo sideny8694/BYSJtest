@@ -1,0 +1,6 @@
+
+logging:
+  config: classpath:log4j2-dev.xml  #日志配置文件
+  level:
+    com.alibaba.nacos.client.naming: WARN 
+    com.alibaba.nacos.client.config.impl: WARN 

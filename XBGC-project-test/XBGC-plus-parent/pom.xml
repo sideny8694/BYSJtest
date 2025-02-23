@@ -54,6 +54,8 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!-- 阿里的依赖管理 -->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
@@ -61,6 +63,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <!-- lombok，简化类的构建-->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -186,7 +189,12 @@
                 <artifactId>elasticsearch</artifactId>
                 <version>${elasticsearch.version}</version>
             </dependency>
+
+
+
         </dependencies>
+
+
 
     </dependencyManagement>
 

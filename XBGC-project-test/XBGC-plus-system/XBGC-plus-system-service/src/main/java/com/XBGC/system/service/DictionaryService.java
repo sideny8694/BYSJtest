@@ -11,7 +11,7 @@ import java.util.List;
  * </p>
  *
  * @author itcast
- * @since 2021-10-07
+ * @since
  */
 public interface DictionaryService extends IService<Dictionary> {
 

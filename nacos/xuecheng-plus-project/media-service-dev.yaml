@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/xc_media?serverTimezone=UTC&userUnicode=true&useSSL=false
+    username: root
+    password: A10ne,tillde@th.
+  cloud:
+   config:
+    override-none: true
+
+minio:
+  endpoint: http://127.0.0.1:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucket:
+    files: mediafiles
+    videofiles: video
+
+xxl:
+  job:
+    admin: 
+      addresses: http://192.168.101.128:18088/xxl-job-admin/
+    executor:
+      appname: media-process-service
+      address:
+      ip:
+      port: 9999
+      logpath: /data/applogs/xxl-job-jobhandler
+      logretentiondays: 30
+    accessToken: default_token
+videoprocess:
+  ffmpegpath: D:\SoftWare\ffmpeg\ffmpeg.exe

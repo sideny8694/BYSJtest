@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="axios0.16.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/js/axios0.16.2.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

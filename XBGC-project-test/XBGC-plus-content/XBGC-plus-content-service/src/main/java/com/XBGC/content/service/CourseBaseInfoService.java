@@ -26,7 +26,7 @@ public interface CourseBaseInfoService {
      * @author Mr.w
      * @date 
      */
-    PageResult<CourseBase> queryCourseBaseList(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto);
+    PageResult<CourseBase> queryCourseBaseList(Long companyId, PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto);
 
     /*
      * @description 新增课程
@@ -51,4 +51,7 @@ public interface CourseBaseInfoService {
      */
     public CourseBaseInfoDto updateCourseBase(Long companyId, EditCourseDto editCourseDto);
 
+
+    //刪除課程接口
+    void delectCourse(Long companyId, Long courseId);
 }

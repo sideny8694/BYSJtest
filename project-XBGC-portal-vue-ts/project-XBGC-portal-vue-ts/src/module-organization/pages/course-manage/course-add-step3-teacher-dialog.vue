@@ -105,11 +105,23 @@ export default class extends Vue {
         this.teacherData.photograph = this.teacherData.photograph.replace(`${process.env.VUE_APP_SERVER_PICSERVER_URL}`,'')
 
       }
-      await submitTeacher(this.teacherData)
-      this.syncDialogVisible = false
-      this.restForm()
-      this.$emit('complete')
+      try {
+          // 调用添加教师的 API
+          await submitTeacher(this.teacherData)
+          this.syncDialogVisible = false
+          this.restForm()
+          this.$emit('complete')
+          this.$message.success('添加成功')
+          this.$emit('complete').handleClose()
+      } catch (error) {
+          this.$message.success('添加失敗')
+      }
+
     }
   }
+    handleClose() {
+      this.$emit('update:dialogVisible', false)
+  }
+
 }
 </script>

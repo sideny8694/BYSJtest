@@ -19,4 +19,9 @@
         id, media_id, teachplan_id, course_id, media_fileName, create_date, create_people, change_people
     </sql>
 
+    <!-- 根据课程计划 ID 删除关联的媒体信息 -->
+    <delete id="deleteByTeachplanId">
+        DELETE FROM teachplan_media WHERE teachplan_id = #{teachplanId}
+    </delete>
+
 </mapper>

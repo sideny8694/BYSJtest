@@ -1,15 +1,14 @@
 package com.XBGC.content.model.dto;
 
-
 import lombok.Data;
-import lombok.ToString;
 
 /**
- * @description 保存课程计划dto，包括新增、修改
+ * @author Mr.w
+ * @version 1.0
+ * @description 新增大章节、小章节、修改章节信息
+ * @date 2025/2/1/14 14:54
  */
-
 @Data
-@ToString
 public class SaveTeachplanDto {
 
     /***
@@ -53,6 +52,4 @@ public class SaveTeachplanDto {
      * 是否支持试学或预览（试看）
      */
     private String isPreview;
-
-
 }
