@@ -16,10 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 /**
- * @author Mr.w
+ * @author Mr.M
  * @version 1.0
  * @description 安全管理配置
- * @date 2025/2/26 20:53
  */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true,prePostEnabled = true)
@@ -31,7 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    //配置用户信息服务
+
+//    //配置用户信息服务
 //    @Bean
 //    public UserDetailsService userDetailsService() {
 //        //这里配置用户信息,这里暂时使用这种方式将用户存储在内存中
@@ -44,16 +44,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
 //        //密码为明文方式
-//        return NoOpPasswordEncoder.getInstance();
-        return new BCryptPasswordEncoder();
+      //  return NoOpPasswordEncoder.getInstance();
+     return new BCryptPasswordEncoder();
     }
+
 
     @Autowired
     DaoAuthenticationProviderCustom daoAuthenticationProviderCustom;
 
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //将自定义的认证方式配置到认证管理器中
         auth.authenticationProvider(daoAuthenticationProviderCustom);
     }
 
@@ -79,11 +80,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             boolean matches = passwordEncoder.matches(password, encode);
             System.out.println(matches);
         }
-
+        //正確的是 11111  部署 1234  所以 最後 是 false
         boolean matches = passwordEncoder.matches("1234", "$2a$10$fb2RlvFwr9HsRu9vH1OxCu/YiMRw6wy5UI6u3s0A.0bVSuR1UqdHK");
         System.out.println(matches);
     }
-
 
 
 }

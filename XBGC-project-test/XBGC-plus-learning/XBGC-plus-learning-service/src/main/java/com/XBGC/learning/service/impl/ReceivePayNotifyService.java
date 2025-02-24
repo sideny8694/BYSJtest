@@ -52,11 +52,7 @@ public class ReceivePayNotifyService {
                 XBGCPlusException.cast("保证选课记录状态失败");
             }
 
-
         }
 
-
     }
-
-
 }

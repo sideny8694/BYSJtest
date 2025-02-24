@@ -44,7 +44,7 @@ import java.util.Map;
 public class OrderController {
 
     @Autowired
-    OrderService orderService;
+    OrderService orderService ;
 
     @Value("${pay.alipay.APP_ID}")
     String APP_ID;

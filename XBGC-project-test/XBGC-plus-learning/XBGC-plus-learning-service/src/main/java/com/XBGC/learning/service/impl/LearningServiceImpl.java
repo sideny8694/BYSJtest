@@ -31,6 +31,7 @@ public class LearningServiceImpl implements LearningService {
     @Autowired
     MediaServiceClient mediaServiceClient;
 
+
     @Override
     public RestResponse<String> getVideo(String userId, Long courseId, Long teachplanId, String mediaId) {
 
@@ -59,7 +60,8 @@ public class LearningServiceImpl implements LearningService {
                 //有资格学习，要返回视频的播放地址
                 //程调用媒资获取视频播放地址
                 RestResponse<String> playUrlByMediaId = mediaServiceClient.getPlayUrlByMediaId(mediaId);
-                return playUrlByMediaId;
+                CoursePublish coursePublish = mediaServiceClient.getCoursepublish(courseId);
+                return playUrlByMediaId ;
 
             }
 
@@ -71,7 +73,8 @@ public class LearningServiceImpl implements LearningService {
             //有资格学习，要返回视频的播放地址
             //远程调用媒资获取视频播放地址
             RestResponse<String> playUrlByMediaId = mediaServiceClient.getPlayUrlByMediaId(mediaId);
-            return playUrlByMediaId;
+            CoursePublish coursePublish = mediaServiceClient.getCoursepublish(courseId);
+            return  playUrlByMediaId;
         }
         return RestResponse.validfail("课程需要购买");
     }

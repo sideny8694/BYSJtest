@@ -1,21 +1,18 @@
 package com.XBGC.auth.controller;
 
 import com.XBGC.ucenter.mapper.XcUserMapper;
-import com.XBGC.ucenter.model.dto.FindPswDto;
-import com.XBGC.ucenter.model.dto.RegisterDto;
 import com.XBGC.ucenter.model.po.XcUser;
-import com.XBGC.ucenter.service.VerifyService;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author Mr.w
+ * @author Mr.M
  * @version 1.0
  * @description 测试controller
- * @date 2025/2/27 17:25
  */
 @Slf4j
 @RestController
@@ -23,10 +20,6 @@ public class LoginController {
 
     @Autowired
     XcUserMapper userMapper;
-
-    @Autowired
-    VerifyService verifyService;
-
 
 
     @RequestMapping("/login-success")
@@ -56,15 +49,4 @@ public class LoginController {
 
 
 
-    @ApiOperation(value = "找回密码", tags = "找回密码")
-    @PostMapping("/findpassword")
-    public void findPassword(@RequestBody FindPswDto findPswDto) {
-        verifyService.findPassword(findPswDto);
-    }
-
-    @ApiOperation(value = "注册", tags = "注册")
-    @PostMapping("/register")
-    public void register(@RequestBody RegisterDto registerDto) {
-        verifyService.register(registerDto);
-    }
 }

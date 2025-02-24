@@ -1,7 +1,7 @@
 package com.XBGC.ucenter.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.XBGC.ucenter.feignclient.CheckCodeClient;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.XBGC.ucenter.mapper.XcUserMapper;
 import com.XBGC.ucenter.model.dto.AuthParamsDto;
 import com.XBGC.ucenter.model.dto.XcUserExt;
@@ -33,6 +33,8 @@ public class PasswordAuthServiceImpl implements AuthService {
 
  @Override
  public XcUserExt execute(AuthParamsDto authParamsDto) {
+  //账号
+  String username = authParamsDto.getUsername();
 
   //输入的验证码
   String checkcode = authParamsDto.getCheckcode();
@@ -49,9 +51,8 @@ public class PasswordAuthServiceImpl implements AuthService {
    throw new RuntimeException("验证码输入错误");
   }
 
+
   //账号是否存在
-  //账号
-  String username = authParamsDto.getUsername();
   //根据username账号查询数据库
   XcUser xcUser = xcUserMapper.selectOne(new LambdaQueryWrapper<XcUser>().eq(XcUser::getUsername, username));
 

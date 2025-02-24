@@ -21,11 +21,14 @@ import java.util.List;
 @ControllerAdvice// 控制器增強
 //@RestControllerAdvice = @ResponseBody + @ControllerAdvice
 public class GlobalExceptionHandler {
+
+
 //对项目自定义异常处理
     @ResponseBody  //返回 json格式
     @ExceptionHandler(XBGCPlusException.class)//此方法捕獲XBGCPlusException异常
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)//狀態碼 返回500
     public RestErrorResponse customException(XBGCPlusException e) {
+
         log.error("【系统异常】{}",e.getErrMessage(),e);
         return new RestErrorResponse(e.getErrMessage());
 
@@ -37,6 +40,10 @@ public class GlobalExceptionHandler {
     public RestErrorResponse exception(Exception e) {
 
         log.error("【系统异常】{}",e.getMessage(),e);
+        if (e.getMessage().equals("不允許訪問")) {
+            return new RestErrorResponse("\n" +
+                    "您没有权限操作此功能");
+        }
 
         return new RestErrorResponse(CommonError.UNKOWN_ERROR.getErrMessage());
 

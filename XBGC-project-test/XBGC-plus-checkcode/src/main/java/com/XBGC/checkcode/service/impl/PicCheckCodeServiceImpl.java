@@ -17,10 +17,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
- * @author Mr.w
+ * @author Mr.M
  * @version 1.0
  * @description 图片验证码生成器
- * @date 2025/2/29 16:16
+ * @date 2022/9/29 16:16
  */
 @Service("PicCheckCodeService")
 public class PicCheckCodeServiceImpl extends AbstractCheckCodeService implements CheckCodeService {
@@ -51,7 +51,7 @@ public class PicCheckCodeServiceImpl extends AbstractCheckCodeService implements
 
     @Override
     public CheckCodeResultDto generate(CheckCodeParamsDto checkCodeParamsDto) {
-        GenerateResult generate = generate(checkCodeParamsDto, 4, "checkcode:", 300);
+        GenerateResult generate = generate(checkCodeParamsDto, 4, "checkcode:", 60);
         String key = generate.getKey();
         String code = generate.getCode();
         String pic = createPic(code);

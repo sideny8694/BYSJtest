@@ -1,0 +1,18 @@
+### 授权码模式
+### 第一步申请授权码(浏览器请求)/oauth/authorize?client_id=c1&response_type=code&scope=all&redirect_uri=http://www.51xbgc.cn
+### 第二步申请令牌
+POST {{auth_host}}/auth/oauth/token?client_id=XcWebApp&client_secret=XcWebApp&grant_type=authorization_code&code=UrhKrK&redirect_uri=http://www.51xbgc.cn
+
+?code=UrhKrK
+
+### 密码模式
+POST {{auth_host}}/auth/oauth/token?client_id=XcWebApp&client_secret=XcWebApp&grant_type=password&username=t1&password=111111
+
+###校验jwt令牌
+POST {{auth_host}}/auth/oauth/check_token?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiWEJHQy1wbHVzIl0sInVzZXJfbmFtZSI6IntcImNvbXBhbnlJZFwiOlwiMTIzMjE0MTQyNVwiLFwiY3JlYXRlVGltZVwiOlwiMjAyMi0wOS0yOFQwODozMjowM1wiLFwiaWRcIjpcIjUyXCIsXCJuYW1lXCI6XCJN6ICB5biIXCIsXCJwZXJtaXNzaW9uc1wiOltdLFwic2V4XCI6XCIxXCIsXCJzdGF0dXNcIjpcIlwiLFwidXNlcm5hbWVcIjpcInQxXCIsXCJ1dHlwZVwiOlwiMTAxMDAyXCJ9Iiwic2NvcGUiOlsiYWxsIl0sImV4cCI6MTc0MDQwMzI5OCwiYXV0aG9yaXRpZXMiOlsidGVzdCJdLCJqdGkiOiJmNzYzMGVhYy1kYThhLTRlNjctYWFlNS00ZGRlMTdjY2QyMTciLCJjbGllbnRfaWQiOiJYY1dlYkFwcCJ9.XcLtFpecm4VbO_BhLgkZwIb8TNNw6hBSrGBPsGQHcr8
+
+### 密码模式，请求AuthParamsDto参数
+POST {{auth_host}}/auth/oauth/token?client_id=XcWebApp&client_secret=XcWebApp&grant_type=password&username={"username":"t1","password":"111111","authType":"password"}
+
+####
+GET https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code

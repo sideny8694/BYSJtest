@@ -1,5 +1,7 @@
 package com.XBGC.ucenter.service.impl;
 
+import com.XBGC.ucenter.model.po.XcUser;
+import com.XBGC.ucenter.service.AuthService;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.XBGC.ucenter.mapper.XcMenuMapper;
@@ -7,8 +9,6 @@ import com.XBGC.ucenter.mapper.XcUserMapper;
 import com.XBGC.ucenter.model.dto.AuthParamsDto;
 import com.XBGC.ucenter.model.dto.XcUserExt;
 import com.XBGC.ucenter.model.po.XcMenu;
-import com.XBGC.ucenter.model.po.XcUser;
-import com.XBGC.ucenter.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -20,6 +20,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.security.core.userdetails.User.*;
 
 /**
  * @author Mr.w
@@ -35,8 +37,10 @@ public class UserServiceImpl implements UserDetailsService {
 
     @Autowired
     XcMenuMapper xcMenuMapper;
+
     @Autowired
     ApplicationContext applicationContext;
+
 
 
 
@@ -72,7 +76,6 @@ public class UserServiceImpl implements UserDetailsService {
      * @param xcUser  用户id，主键
      * @return com.XBGC.ucenter.model.po.XcUser 用户信息
      * @author Mr.w
-     * @date 2025/2/29 12:19
      */
     public UserDetails getUserPrincipal(XcUserExt xcUser){
         String password = xcUser.getPassword();
@@ -89,10 +92,10 @@ public class UserServiceImpl implements UserDetailsService {
             //将permissions转成数组
             authorities = permissions.toArray(new String[0]);
         }
-
+//
 
         xcUser.setPassword(null);
-        //将用户信息转json
+//        //将用户信息转json
         String userJson = JSON.toJSONString(xcUser);
         UserDetails userDetails = User.withUsername(userJson).password(password).authorities(authorities).build();
         return  userDetails;

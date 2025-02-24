@@ -6,10 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Mr.w
+ * @author Mr.M
  * @version 1.0
  * @description 认证用户请求参数
- * @date 2025/2/29 10:56
  */
 @Data
 public class AuthParamsDto {

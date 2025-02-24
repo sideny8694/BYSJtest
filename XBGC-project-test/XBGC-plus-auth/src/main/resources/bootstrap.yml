@@ -22,9 +22,5 @@ spring:
           - data-id: feign-${spring.profiles.active}.yaml
             group: XBGC-plus-common
             refresh: true
-          - data-id: redis-${spring.profiles.active}.yaml
-            group: XBGC-plus-common
-            refresh: true
-
   profiles:
     active: dev

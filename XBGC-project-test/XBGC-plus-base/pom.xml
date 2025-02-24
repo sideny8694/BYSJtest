@@ -15,6 +15,7 @@
 
 <!--base 工程需要基本依赖-->
     <dependencies>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

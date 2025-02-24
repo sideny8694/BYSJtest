@@ -46,6 +46,11 @@ public class CourseBaseInfoController {
 
         PageResult<CourseBase> courseBasePageResult = courseBaseInfoService.queryCourseBaseList(companyId,pageParams, queryCourseParamsDto);
 
+        // 添加空参数处理
+        if (queryCourseParamsDto == null) {
+            queryCourseParamsDto = new QueryCourseParamsDto();
+        }
+
         return courseBasePageResult;
 
     }
@@ -66,9 +71,19 @@ public class CourseBaseInfoController {
     public CourseBaseInfoDto getCourseBaseById(@PathVariable Long courseId){
         /*CourseBaseInfoDto courseBaseInfo = courseBaseInfoService.getCourseBaseInfo(courseId);*/
         SecurityUtil.XcUser user = SecurityUtil.getUser();
+        if (user == null){
+            throw new RuntimeException("wei deng lu ");
+        }
         System.out.println(user.getUsername());
-        CourseBaseInfoDto courseBaseInfo = courseBaseInfoService.getCourseBaseInfo(courseId);
-        return courseBaseInfo;
+//        CourseBaseInfoDto courseBaseInfo = courseBaseInfoService.getCourseBaseInfo(courseId);
+//        return courseBaseInfo;
+        // 添加try-catch块
+        try {
+            return courseBaseInfoService.getCourseBaseInfo(courseId);
+        } catch (Exception e) {
+            throw new RuntimeException("课程信息查询失败：" + e.getMessage());
+        }
+
     }
 
 

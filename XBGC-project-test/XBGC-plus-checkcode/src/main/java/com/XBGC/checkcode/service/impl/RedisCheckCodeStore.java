@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Mr.w
+ * @author Mr.M
  * @version 1.0
  * @description 使用redis存储验证码，测试用
- * @date 2025/2/29 18:36
+ * @date 2022/9/29 18:36
  */
 @Component("RedisCheckCodeStore")
 public class RedisCheckCodeStore implements CheckCodeService.CheckCodeStore {
